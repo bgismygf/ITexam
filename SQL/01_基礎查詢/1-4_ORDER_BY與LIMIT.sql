@@ -10,6 +10,13 @@ SELECT * FROM exams ORDER BY year DESC;
 
 -- 範例 3：多欄位排序：先依年度由新到舊，同年度再依科目
 SELECT * FROM exams ORDER BY year DESC, subject;
+-- 結果：exam 5（113 網路概論）、4（113 計算機原理）、3、2、1
+-- 只有 113 年有兩筆，subject 只決定這兩筆的順序；「網」的編碼比「計」小，所以網路概論在前
+
+-- 範例 3-2：⚠️ 一個 DESC 只管一個欄位，和範例 3 比較看看
+SELECT exam_id, year, subject FROM exams ORDER BY year, subject DESC;
+-- 結果：exam 1（110）、2（111）、3（112）、4（113 計算機原理）、5（113 網路概論）
+-- year 沒寫方向，是預設的 ASC（由舊到新）；只有 subject 是 DESC
 
 -- 範例 4：依配分由高到低，同分再依 question_id
 SELECT question_id, score, content
