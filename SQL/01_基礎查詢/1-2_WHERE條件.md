@@ -35,8 +35,10 @@ WHERE year = 113;
 ```sql
 WHERE subject = '網路概論'    -- ✅ 正確
 WHERE subject = 網路概論      -- ❌ 會被當成欄位名稱
-WHERE subject = "網路概論"    -- ⚠️ 有些資料庫會把雙引號當欄位名稱，不要用
+WHERE subject = "網路概論"    -- ❌ 雙引號代表名稱（欄位），不是文字
 ```
+
+單引號和雙引號的完整差別，見 1-5 課。
 
 ## 邏輯運算子：AND、OR、NOT
 

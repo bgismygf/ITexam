@@ -35,6 +35,46 @@ SELECT question_id, score, score * 2 FROM questions;
 ```
 計算結果只出現在查詢結果裡，**不會改到資料表裡的資料**。
 
+### 4. 文字串接：`||`
+
+`||`（兩條直線）把前後的值**接成一段文字**：
+
+```sql
+SELECT year || '年' FROM exams;
+-- 110年、111年、112年……
+```
+
+| 片段 | 意思 |
+|---|---|
+| `year` | 欄位，值是數字 `110` |
+| `'年'` | 文字，要用**單引號**（1-2 課） |
+| `\|\|` | 把兩邊接起來，`110` 會自動轉成文字，結果是 `'110年'` |
+
+可以一次接很多段，中間的空白也要自己用 `' '` 接進去：
+
+```sql
+SELECT year || '年 ' || subject FROM exams;
+-- 110年 計算機原理、111年 計算機原理……
+```
+
+和上面的計算一樣，串接只影響**查詢結果**，資料表裡的 `year` 還是數字 `110`。
+
+⚠️ 結果的欄位名稱會是一長串 `year || '年 ' || subject`，可以用 1-5 課的**別名**（AS）取個好懂的名字。
+
+⚠️ 串接的值有 NULL 時，**整個結果會變成 NULL**（1-6 課）。
+
+### 💼 各家資料庫的串接寫法不同
+
+| 資料庫 | 寫法 |
+|---|---|
+| SQLite、PostgreSQL、Oracle | `year \|\| '年'` |
+| MySQL | `CONCAT(year, '年')`。⚠️ MySQL 預設把 `\|\|` 當成邏輯運算的 OR，結果會變成 1 或 0，**不會出現錯誤訊息**，很難發現 |
+| SQL Server | `CONCAT(year, '年')`。也可以用 `+`，但數字要先轉成文字：`CAST(year AS VARCHAR) + '年'` |
+
+遇到 NULL 時也不一樣：Oracle 的 `||`，以及 PostgreSQL、SQL Server 的 `CONCAT()`，會把 NULL 當成**空字串**，不會讓整個結果變成 NULL。換資料庫時要測試一下。
+
+完整的字串函數對照表在 4-7 課。
+
 ## 💼 工作小技巧
 
 - **正式程式裡盡量不要用 `SELECT *`**：
@@ -63,6 +103,7 @@ SELECT question_id, score, score * 2 FROM questions;
 | `SELECT year subject FROM exams;` | 少了逗號，SQL 會把 `subject` 當成 `year` 的別名（1-5 課會教別名） |
 | `SELECT year, subject, FROM exams;` | 最後一個欄位後面多了逗號，會出現語法錯誤 |
 | `SELECT * FORM exams;` | `FROM` 拼錯 |
+| `SELECT year \|\| 年 FROM exams;` | `年` 沒加單引號，會被當成欄位名稱，出現「no such column: 年」 |
 
 ## 小測驗
 
@@ -72,9 +113,13 @@ SELECT question_id, score, score * 2 FROM questions;
 2. `SELECT` 指定欄位的動作，對應關聯代數的哪一種運算？
    (A) 選擇 σ (B) 投影 π (C) 合併 ⋈ (D) 聯集 ∪
 
+3. 在 SQLite 中，`year` 的值是 `112`、`subject` 的值是 `'網路概論'`，`SELECT year || '-' || subject` 的結果是？
+   (A) 112-網路概論 (B) 112 - 網路概論 (C) 111 (D) 語法錯誤
+
 <details>
 <summary>看答案</summary>
 
 1. **(B)** FROM
 2. **(B)** 投影 π
+3. **(A)** `||` 把三段直接接在一起，不會自動加空白
 </details>

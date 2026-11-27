@@ -16,6 +16,8 @@ SELECT NULL * 0;      -- NULL
 SELECT 'A' || NULL;   -- NULL（文字串接也一樣）
 ```
 
+（例外：Oracle 的 `||` 會把 NULL 當成空字串，結果是 `'A'`，見 1-1 課。）
+
 想像成：「一個不知道的數字加 1」，結果還是「不知道」。
 
 ## 規則 2：NULL 參與比較，結果是 UNKNOWN
